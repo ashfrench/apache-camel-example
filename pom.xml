@@ -25,6 +25,12 @@
             <version>${camel-version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-metrics</artifactId>
+            <version>${camel-version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring-boot-version}</version>
@@ -43,32 +49,27 @@
         </dependency>
 
         <!-- hawtio -->
-
+        <dependency>
+            <groupId>io.hawt</groupId>
+            <artifactId>hawtio-springboot</artifactId>
+            <version>${hawtio-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.hawt</groupId>
+            <artifactId>hawtio-core</artifactId>
+            <version>${hawtio-version}</version>
+        </dependency>
 
     </dependencies>
 
     <build>
-
-        <!-- we do not want version in the WAR name -->
-        <finalName>${project.artifactId}</finalName>
-
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <attachClasses>true</attachClasses>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot-version}</version>
                 <configuration>
-                    <mainClass>org.apache.camel.spring.boot.FatJarRouter</mainClass>
+                    <mainClass>org.ash.camel.Application</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -78,6 +79,25 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+
+            <!-- to run with mvn hawtio:spring-boot -->
+            <plugin>
+                <groupId>io.hawt</groupId>
+                <artifactId>hawtio-maven-plugin</artifactId>
+                <version>${hawtio-version}</version>
+                <configuration>
+                    <mainClass>org.ash.camel.Application</mainClass>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 </project>
