@@ -15,7 +15,7 @@ public class MyRoute extends RouteBuilder{
 
     @Override
     public void configure() throws Exception {
-        from("timer:foo").setBody().constant("Ash Rules")
+        from("timer:foo").setBody().constant("Ash Rules The World")
                 .setHeader("Awesome Header").constant("My header")
                 .to("log:bar");
     }

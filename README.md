@@ -5,7 +5,7 @@
 
 ###Building and Running The Docker Container
     mvn clean install
-    docker build -t camel-app
+    docker build -t camel-app .
     docker run -d -p 8080:8080 camel-app
 
 **URL of app**
