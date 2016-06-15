@@ -7,10 +7,106 @@
     <groupId>org.ash</groupId>
     <artifactId>apache-camel-example</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>camel-app</module>
-        <module>docker</module>
-    </modules>
     <packaging>pom</packaging>
 
+    <properties>
+        <hawtio-version>1.4.65</hawtio-version>
+        <spring-boot-version>1.3.5.RELEASE</spring-boot-version>
+        <jetty.version>9.2.11.v20150529</jetty.version>
+        <camel-version>2.17.1</camel-version>
+        <java-version>1.8</java-version>
+        <docker.image.prefix>org.ash</docker.image.prefix>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-spring-boot</artifactId>
+            <version>${camel-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-metrics</artifactId>
+            <version>${camel-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot-version}</version>
+        </dependency>
+
+        <!-- operations -->
+        <dependency>
+            <groupId>org.jolokia</groupId>
+            <artifactId>jolokia-core</artifactId>
+            <version>1.3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>${spring-boot-version}</version>
+        </dependency>
+
+        <!-- hawtio -->
+        <dependency>
+            <groupId>io.hawt</groupId>
+            <artifactId>hawtio-springboot</artifactId>
+            <version>${hawtio-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.hawt</groupId>
+            <artifactId>hawtio-core</artifactId>
+            <version>${hawtio-version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot-version}</version>
+                <configuration>
+                    <mainClass>org.ash.camel.Application</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- to run with mvn hawtio:spring-boot -->
+            <plugin>
+                <groupId>io.hawt</groupId>
+                <artifactId>hawtio-maven-plugin</artifactId>
+                <version>${hawtio-version}</version>
+                <configuration>
+                    <mainClass>org.ash.camel.Application</mainClass>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.2.3</version>
+                <configuration>
+                    <imageName>${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 </project>
